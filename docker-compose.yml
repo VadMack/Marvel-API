@@ -1,0 +1,31 @@
+version: '3.3'
+services:
+  database:
+    container_name: super_database
+    image: mysql:latest
+    volumes:
+      - db_mysql:/var/lib/mysql
+      - ./database/initialize.sql:/docker-entrypoint-initdb.d/initialize.sql
+      - ./resources:/resources
+    restart: unless-stopped
+    env_file:
+      - ./.env
+    ports:
+      - 3306:3306
+
+  server:
+    container_name: super_server
+    build:
+      dockerfile: ./Dockerfile
+      context: ./
+    depends_on:
+      - database
+    ports:
+      - 8080:8080
+    volumes:
+      - ./resources:/resources
+    restart: always
+
+
+volumes:
+  db_mysql:
