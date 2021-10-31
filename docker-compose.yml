@@ -5,7 +5,6 @@ services:
     image: mysql:latest
     volumes:
       - db_mysql:/var/lib/mysql
-      - ./database/initialize.sql:/docker-entrypoint-initdb.d/initialize.sql
       - ./resources:/resources
     restart: unless-stopped
     env_file:
